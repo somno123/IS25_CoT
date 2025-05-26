@@ -13,7 +13,7 @@ Task: Evaluate the participant's ability to describe the image, focusing on thei
 
 Analysis Framework:
 1. **Visual Recognition Analysis**
-   - Identification of key elements (e.g., mother, children, kitchen objects)
+   - Identification of cue elements (e.g., mother, children, kitchen objects)
    - Recognition of activities and spatial relationships
    - Awareness of safety hazards in the scene
 
@@ -34,34 +34,27 @@ Analysis Framework:
 
 Input: """
     
-    key_elements = ["stool", "sink", "dish", "wash", "jar", "cookie", 
+    cue_elements = ["stool", "sink", "dish", "wash", "jar", "cookie", 
                    "child", "mother", "window", "cabinet", "kitchen", "water"]
 
     text = row['text']
-    key_element_count = sum(1 for element in key_elements if element in text.lower())
+    cue_element_count = sum(1 for element in cue_elements if element in text.lower())
 
-    if key_element_count >= len(key_elements) * 0.75:
+    if cue_element_count >= len(cue_elements) * 0.75:
         category = "Highly Detailed (Non-AD Likely)"
-    elif key_element_count >= len(key_elements) / 2:
+    elif cue_element_count >= len(cue_elements) / 2:
         category = "Moderately Detailed (Borderline Case)"
     else:
         category = "Low Detail (AD Candidate)"
 
     index = row.name if isinstance(row.name, (int, np.integer)) else 0
-    
-    if index <= 54:
-        patient_group = "Speech data from non-dementia patients"
-    elif index <= 108:
-        patient_group = "Speech data from dementia patients"
-    else:
-        patient_group = "Speech data from unclassified group"
 
     return (
         f"{base_prompt}\n"
-        f"Patient Group: {patient_group}\n"
         f"Category: {category}\n"
         f"Text Analysis:\n{text}"
     )
+
 
 def load_and_process_data():
     # data load
@@ -91,6 +84,7 @@ def load_and_process_data():
     
     return train_dataset, test_dataset
 
+
 def tokenize_with_features(examples, tokenizer):
     tokenized = tokenizer(
         examples["text"],
@@ -102,6 +96,7 @@ def tokenize_with_features(examples, tokenizer):
     )
     tokenized["labels"] = [int(label) for label in examples["labels"]]
     return tokenized
+
 
 class CustomDataCollator(DataCollatorWithPadding):
     def __init__(self, tokenizer):
