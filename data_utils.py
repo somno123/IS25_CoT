@@ -9,37 +9,43 @@ from config import BASE_PATH
 def CoT_prompt(row):
     base_prompt = """You are an expert neurologist specializing in dementia diagnosis. Analyze the participant's description of the kitchen scene image for signs of cognitive impairment.
 
-Analysis Steps:
-1. Check for mention of key cue elements (e.g., stool, sink, dish, etc.).
-2. Evaluate awareness of safety hazards (e.g., stool, water, window).
-3. Assess logical flow and narrative coherence using connecting words.
-4. Integrate all findings to determine the likelihood of dementia.
+    Analysis Steps:
+    1. Check for mention of key cue elements (e.g., stool, sink, dish, etc.).
+    2. Evaluate awareness of safety hazards (e.g., stool, water, window).
+    3. Assess logical flow and narrative coherence using connecting words.
+    4. Integrate all findings to determine the likelihood of dementia.
+    
+    Input:"""
 
-Input: """
     cue_elements = ["stool", "sink", "dish", "wash", "jar", "cookie", 
                     "child", "mother", "window", "cabinet", "kitchen", "water"]
-    text = row['text']
-    cue_element_count = sum(1 for element in cue_elements if element in text.lower())
 
-    # Detailed reasoning trace
-    reasoning = (
-        f"The participant mentioned {cue_element_count} out of {len(cue_elements)} key elements "
-        f"({', '.join([e for e in cue_elements if e in text.lower()])}). "
-        "A higher count suggests good visual recognition and attention to detail.\n"
-    )
+    text = row['text'].lower()
 
+    cue_element_count = sum(1 for element in cue_elements if element in text)
+
+    # Detail categorization with explanation
     if cue_element_count >= len(cue_elements) * 0.75:
         category = "Highly Detailed (Unlikely AD)"
+        reasoning_detail = "A higher count suggests excellent visual recognition and attention to detail, with clear awareness of the scene."
     elif cue_element_count >= len(cue_elements) / 2:
         category = "Moderately Detailed (Borderline Case)"
+        reasoning_detail = "This level of detail shows moderate scene comprehension and recall, though some relevant elements are missing."
     else:
         category = "Low Detail (Possible AD)"
+        reasoning_detail = "A lower count suggests limited visual recognition or memory recall, potentially indicating early signs of cognitive impairment."
+
+    reasoning = (
+        f"The participant mentioned {cue_element_count} out of {len(cue_elements)} key elements "
+        f"({', '.join([e for e in cue_elements if e in text])}).\n"
+        f"{reasoning_detail}\n"
+    )
 
     return (
-        f"{base_prompt}\n"
-        f"Reasoning Process:\n{reasoning}\n"
-        f"Final Assessment: {category}\n"
-        f"Participant Description:\n{text}"
+        f"{base_prompt}\n\n"
+        f"Reasoning Process:\n{reasoning}\n\n"
+        f"Final Assessment: {category}\n\n"
+        f"### Participant Description ###:\n{row['text']}"
     )
 
 
