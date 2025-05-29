@@ -51,7 +51,6 @@ def CoT_prompt(row):
     return (
         f"{base_prompt}"
         f"{text}\n\n"
-        f"Patient Group: {patient_group}\n"
         f"Detail Category: {category}\n\n"
         f"Answer:\n"
     )
