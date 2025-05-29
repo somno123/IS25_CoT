@@ -5,11 +5,13 @@ from transformers import TrainingArguments, get_scheduler
 from trl import SFTTrainer
 from config import *
 
+
 def compute_metrics(eval_pred):
     metric = evaluate.load("accuracy")
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=-1)
     return metric.compute(predictions=predictions, references=labels)
+
 
 def setup_trainer(model, tokenizer, lora_config, train_dataset, test_dataset, collate_fn):
     training_args = TrainingArguments(
