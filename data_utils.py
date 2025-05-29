@@ -15,9 +15,9 @@ def CoT_prompt(row):
     
     Analysis Steps:
     1. Visual Recognition Analysis
-   - Did the participant identify key elements (e.g., mother, children, kitchen objects)?
-   - Did they recognize activities and spatial relationships?
-   - Did they notice safety hazards in the scene?
+       - Did the participant identify key elements (e.g., mother, children, kitchen objects)?
+       - Did they recognize activities and spatial relationships?
+       - Did they notice safety hazards in the scene?
     2. Descriptive Language Assessment
        - Is the description complete and logically sequenced?
        - Is vocabulary rich and is the narrative coherent?
