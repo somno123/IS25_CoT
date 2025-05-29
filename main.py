@@ -10,6 +10,7 @@ from model import setup_model_and_tokenizer
 from train import setup_trainer
 from evaluation import evaluate_model
 
+
 def seed_everything(seed=42):
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
@@ -17,6 +18,7 @@ def seed_everything(seed=42):
     torch.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
 
 def main():
     seed_everything(config.SEED)
@@ -51,6 +53,7 @@ def main():
     results = evaluate_model(trainer, test_dataset)
     
     return results
+
 
 if __name__ == "__main__":
     main()
