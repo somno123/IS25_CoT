@@ -3,6 +3,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from peft import LoraConfig, TaskType, get_peft_model
 from config import MODEL_NAME, NUM_LABELS, LORA_R, LORA_ALPHA, LORA_DROPOUT
 
+
 def setup_model_and_tokenizer():
     model = AutoModelForSequenceClassification.from_pretrained(
         MODEL_NAME, 
