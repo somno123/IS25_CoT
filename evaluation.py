@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 
+
 def evaluate_model(trainer, test_dataset):
     eval_results = trainer.evaluate()
     
