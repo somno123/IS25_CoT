@@ -6,6 +6,7 @@ import torch
 from transformers import DataCollatorWithPadding
 from config import BASE_PATH
 
+
 def CoT_prompt(row):
     base_prompt = """You are an expert neurologist specializing in dementia diagnosis.
 
