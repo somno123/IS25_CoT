@@ -36,12 +36,6 @@ def CoT_prompt(row):
     else:
         category = "Low Detail (AD Candidate)"
 
-    reasoning = (
-        f"The participant mentioned {cue_element_count} out of {len(cue_elements)} key elements "
-        f"({', '.join([e for e in cue_elements if e in text])}).\n"
-        f"{reasoning_detail}\n"
-    )
-
     return (
         f"{base_prompt}"
         f"{text}\n\n"
