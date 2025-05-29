@@ -13,10 +13,22 @@ def CoT_prompt(row):
     Based on the participant's verbal description of the kitchen scene, can you assess the likelihood of cognitive impairment by evaluating their attention to detail, spatial awareness, and cognitive coherence?
     
     Analysis Steps:
-        1. Check for mention of key cue elements (e.g., stool, sink, dish, etc.).
-        2. Evaluate awareness of safety hazards (e.g., stool, water, window).
-        3. Assess logical flow and narrative coherence using connecting words.
-        4. Integrate all findings to determine the likelihood of dementia.
+    1. Visual Recognition Analysis
+   - Did the participant identify key elements (e.g., mother, children, kitchen objects)?
+   - Did they recognize activities and spatial relationships?
+   - Did they notice safety hazards in the scene?
+    2. Descriptive Language Assessment
+       - Is the description complete and logically sequenced?
+       - Is vocabulary rich and is the narrative coherent?
+       - Is there a logical flow and organization of thoughts?
+    3. Detail Observation
+       - Are specific objects (e.g., ladder, sink, curtain) mentioned?
+       - Is there awareness of characters' actions and interactions?
+       - Is there depth of understanding or are critical elements missing?
+    4. Memory and Attention
+       - Is the description consistent, without forgetting or repeating elements?
+       - Does the participant maintain focus on relevant details?
+       - Is the thought process structured and organized?
     
     Participant's Description:
     """
