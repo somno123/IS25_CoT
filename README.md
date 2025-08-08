@@ -9,14 +9,6 @@ conda activate cot
 pip install -r requirements.txt
 ```
 
-## Pretrained models (ResNetSE34)
-
-```
-wget -P ./voxceleb_trainer http://www.robots.ox.ac.uk/~joon/data/baseline_v2_smproto.model
-```
-
-## Execution Command
-
 ### Basic Usage
 ```
 python main.py
