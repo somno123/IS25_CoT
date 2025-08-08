@@ -9,7 +9,7 @@ BASE_PATH = '/data'
 SEED = 42
 
 # model
-MODEL_NAME = "meta-llama/Llama-3.2-1B"
+MODEL_NAME = "meta-llama/Llama-3.2-1B-Instruct"
 NUM_LABELS = 2
 MAX_SEQ_LENGTH = 512
 
@@ -40,3 +40,4 @@ PACKING = False
 load_best_model_at_end=True  
 metric_for_best_model="accuracy"
 save_total_limit=2  
+
