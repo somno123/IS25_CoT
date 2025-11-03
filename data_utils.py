@@ -8,53 +8,43 @@ from config import BASE_PATH
 
 
 def CoT_prompt(row):
-    base_prompt = """You are an expert neurologist specializing in dementia diagnosis.
+    import numpy as np
 
-    Question:
-    Based on the participant's verbal description of the kitchen scene, can you assess the likelihood of cognitive impairment by evaluating their attention to detail, spatial awareness, and cognitive coherence?
+    cue_elements = ["adult", "child", "cookie jar", "dish", "sink", "stool", "reach", "stand", "wash"]
+
+    cue_elements_str = ", ".join(cue_elements)
+
+    base_prompt = f"""You are an expert neurologist specializing in dementia diagnosis.
+Analyze the participant's description of the kitchen scene based solely on the presence and relevance of critical cues.
+
+Task: Step-by-step, evaluate the presence of each cues and infer the participant's cognitive detail level.
+
+Cue elements to check: {cue_elements_str}
+*If a different but semantically similar word is used (e.g., "mother" ≈ "adult", "cabinet" ≈ "cupboard"), count it as the corresponding cue element.*
+
+Step 1. Identify the cues in the person's utterance. Check if each cue element is mentioned. List the present cues.
+Step 2. Evaluate cue relevance from the identified cues. Count the number of cues present. Calculate the percentage of cues observed out of the total check cues (the {len(cue_elements)} cue elements listed above).
+Step 3. Diagnose based on the evaluation result. 
+(1) high detail: Includes at least 75% of the cues → likely non-AD
+(2) moderate detail: Includes 50% or more but less than 75% of the cues → borderline case
+(3) low detail: Includes less than 50% of the cues → AD candidate
+
+Example 1:
+Input: "The adult is by the sink, the child is on the stool reaching for the cookie jar."
+Step 1. Cues found = ["adult", "sink", "child", "stool", "reach", "cookie jar"]
+Step 2. 6/{len(cue_elements)} cues present (=67%)
+Step 3. moderate detail (borderline case)
+
+Example 2:  
+Input: "There are some people there."
+Step 1. cues found = []
+Step 2. 0/{len(cue_elements)} cues present (=0%)
+Step 3. low detail (AD candidate)
+"""
+
+    text = row['text']
     
-    Analysis Steps:
-    1. Visual Recognition Analysis
-       - Did the participant identify key elements (e.g., mother, children, kitchen objects)?
-       - Did they recognize activities and spatial relationships?
-       - Did they notice safety hazards in the scene?
-    2. Descriptive Language Assessment
-       - Is the description complete and logically sequenced?
-       - Is vocabulary rich and is the narrative coherent?
-       - Is there a logical flow and organization of thoughts?
-    3. Detail Observation
-       - Are specific objects (e.g., ladder, sink, curtain) mentioned?
-       - Is there awareness of characters' actions and interactions?
-       - Is there depth of understanding or are critical elements missing?
-    4. Memory and Attention
-       - Is the description consistent, without forgetting or repeating elements?
-       - Does the participant maintain focus on relevant details?
-       - Is the thought process structured and organized?
-    
-    Participant's Description:
-    """
-
-    cue_elements = ["stool", "sink", "dish", "wash", "jar", "cookie", 
-                    "child", "mother", "window", "cabinet", "kitchen", "water"]
-
-    text = row['text'].lower()
-
-    cue_element_count = sum(1 for element in cue_elements if element in text)
-
-    # categorization
-    if cue_element_count >= len(cue_elements) * 0.75:
-        category = "Highly Detailed (Non-AD Likely)"
-    elif cue_element_count >= len(cue_elements) / 2:
-        category = "Moderately Detailed (Borderline Case)"
-    else:
-        category = "Low Detail (AD Candidate)"
-
-    return (
-        f"{base_prompt}"
-        f"{text}\n\n"
-        f"Detail Category: {category}\n\n"
-        f"Answer:\n"
-    )
+    return f"{base_prompt}\nParticipant's Description:\n{text}"
 
 
 def load_and_process_data():
@@ -115,3 +105,4 @@ class CustomDataCollator(DataCollatorWithPadding):
             'labels': torch.tensor([f['labels'] for f in features], dtype=torch.long)
         }
         return batch
+
